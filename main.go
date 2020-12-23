@@ -33,6 +33,7 @@ var movies []Movie
 // Get all movies
 func index(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(movies)
 }
 
@@ -43,6 +44,7 @@ func show(w http.ResponseWriter, r *http.Request) {
 	for _, movie := range movies {
 		if movie.ID == params["id"] {
 			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
 			json.NewEncoder(w).Encode(movie)
 			return
 		}

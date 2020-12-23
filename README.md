@@ -29,7 +29,9 @@ This is just a simple rest api developed with go for learning purposes.
 ## TODO
 
 - [x] Logging
-- [ ] Add Request ID
+- [x] Add Request ID
+- [ ] JWT Authentication
+- [ ] Session
 - [ ] Body validation
 - [ ] Data persistence (MongoDB)
 - [ ] Handle Errors
