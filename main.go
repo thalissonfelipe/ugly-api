@@ -2,11 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/thalissonfelipe/ugly-api/middlewares"
 )
 
 // Movie Model
@@ -113,8 +113,6 @@ func delete(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	r := mux.NewRouter().StrictSlash(true)
-
 	// Mock data
 	movies = append(movies, Movie{
 		ID:       "1",
@@ -130,14 +128,15 @@ func main() {
 		},
 	})
 
-	api := r.PathPrefix("/api/v1/movies").Subrouter()
+	router := mux.NewRouter().StrictSlash(true)
+	router.Use(middlewares.LoggingMiddleware)
+	api := router.PathPrefix("/api/v1/movies").Subrouter()
 	api.HandleFunc("/", index).Methods("GET")
 	api.HandleFunc("/{id}", show).Methods("GET")
 	api.HandleFunc("/", create).Methods("POST")
 	api.HandleFunc("/{id}", update).Methods("PUT")
 	api.HandleFunc("/{id}", delete).Methods("DELETE")
 
-	fmt.Println("Server listening on port 5000!")
-
-	log.Fatal(http.ListenAndServe(":5000", r))
+	log.Println("Server listening on port 5000!")
+	log.Fatal(http.ListenAndServe(":5000", router))
 }

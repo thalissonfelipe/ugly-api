@@ -28,7 +28,8 @@ This is just a simple rest api developed with go for learning purposes.
 
 ## TODO
 
-- [ ] Logging
+- [x] Logging
+- [ ] Add Request ID
 - [ ] Body validation
 - [ ] Data persistence (MongoDB)
 - [ ] Handle Errors
