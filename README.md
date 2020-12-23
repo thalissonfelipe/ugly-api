@@ -7,17 +7,17 @@ This is just a simple rest api developed with go for learning purposes.
 * Get all movies
   `GET /api/v1/movies`
 
-* Get a movie by ID
-  `GET /api/v1/movies/{id}`
+* Get a movie by name
+  `GET /api/v1/movies/{name}`
 
 * Create a new movie
   `POST /api/v1/movies`
 
-* Update a movie by ID
-  `PUT /api/v1/movies/{id}`
+* Update a movie by name
+  `PUT /api/v1/movies/{name}`
 
-* Delete a movie by ID
-  `DELETE /api/v1/movies/{id}`
+* Delete a movie by name
+  `DELETE /api/v1/movies/{name}`
 
 ## How to run
 
@@ -33,8 +33,8 @@ This is just a simple rest api developed with go for learning purposes.
 - [ ] JWT Authentication
 - [ ] Session
 - [ ] Body validation
-- [ ] Data persistence (MongoDB)
+- [x] Data persistence (MongoDB)
 - [ ] Handle Errors
 - [ ] Set environment variables
-- [ ] Set up a project architecture
+- [x] Set up a project architecture
 - [ ] Unit Tests
