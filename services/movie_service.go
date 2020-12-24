@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	c "github.com/thalissonfelipe/ugly-api/config"
 	"github.com/thalissonfelipe/ugly-api/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -17,7 +18,7 @@ type MService struct {
 
 // GetMovies should find all movies in the mongo database
 func (m *MService) GetMovies() (*[]models.Movie, error) {
-	collection := m.Client.Database("ugly_db").Collection("movies")
+	collection := m.Client.Database(c.MyConfig.DB.DatabaseName).Collection("movies")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	cursor, err := collection.Find(ctx, bson.D{})
@@ -32,7 +33,7 @@ func (m *MService) GetMovies() (*[]models.Movie, error) {
 
 // GetMovie should find a movie by name in the mongo database
 func (m *MService) GetMovie(name string) (*models.Movie, error) {
-	collection := m.Client.Database("ugly_db").Collection("movies")
+	collection := m.Client.Database(c.MyConfig.DB.DatabaseName).Collection("movies")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var movie models.Movie
@@ -50,7 +51,7 @@ func (m *MService) GetMovie(name string) (*models.Movie, error) {
 
 // CreateMovie should insert a new movie in the mongo database
 func (m *MService) CreateMovie(movie *models.Movie) error {
-	collection := m.Client.Database("ugly_db").Collection("movies")
+	collection := m.Client.Database(c.MyConfig.DB.DatabaseName).Collection("movies")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	_, err := collection.InsertOne(ctx, movie)
@@ -59,7 +60,7 @@ func (m *MService) CreateMovie(movie *models.Movie) error {
 
 // UpdateMovie should update a movie by name in the mongo database
 func (m *MService) UpdateMovie(movie *models.Movie) error {
-	collection := m.Client.Database("ugly_db").Collection("movies")
+	collection := m.Client.Database(c.MyConfig.DB.DatabaseName).Collection("movies")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	update := bson.D{{"$set", movie}}
@@ -70,7 +71,7 @@ func (m *MService) UpdateMovie(movie *models.Movie) error {
 
 // DeleteMovie should delete a movie by name in the mongo database
 func (m *MService) DeleteMovie(name string) error {
-	collection := m.Client.Database("ugly_db").Collection("movies")
+	collection := m.Client.Database(c.MyConfig.DB.DatabaseName).Collection("movies")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	err := collection.FindOneAndDelete(ctx, bson.M{"name": name}).Err()

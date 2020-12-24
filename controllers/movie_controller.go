@@ -54,6 +54,7 @@ func (c *MController) Show(w http.ResponseWriter, r *http.Request) {
 func (c *MController) Create(w http.ResponseWriter, r *http.Request) {
 	var movie models.Movie
 	err := json.NewDecoder(r.Body).Decode(&movie)
+	// defer r.Body.Close()
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("Invalid JSON."))
@@ -76,6 +77,7 @@ func (c *MController) Update(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	var movie models.Movie
 	err := json.NewDecoder(r.Body).Decode(&movie)
+	// defer r.Body.Close()
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("Invalid JSON."))

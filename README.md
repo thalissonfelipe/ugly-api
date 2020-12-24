@@ -35,6 +35,6 @@ This is just a simple rest api developed with go for learning purposes.
 - [ ] Body validation
 - [x] Data persistence (MongoDB)
 - [ ] Handle Errors
-- [ ] Set environment variables
+- [x] Set environment variables
 - [x] Set up a project architecture
 - [ ] Unit Tests
