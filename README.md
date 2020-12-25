@@ -34,7 +34,9 @@ This is just a simple rest api developed with go for learning purposes.
 - [ ] Session
 - [ ] Body validation
 - [x] Data persistence (MongoDB)
-- [ ] Handle Errors
+- [x] Handle Errors
 - [x] Set environment variables
 - [x] Set up a project architecture
 - [ ] Unit Tests
+- [ ] Docker
+- [ ] Swagger

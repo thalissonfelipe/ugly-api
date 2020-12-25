@@ -44,7 +44,7 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 			ctx = context.WithValue(ctx, ContextKeyValue, id)
 			r = r.WithContext(ctx)
 
-			infoLogger := log.New(os.Stdout, "INFO: ", log.Ldate|log.Ltime)
+			infoLogger := log.New(os.Stdout, "INFO:  ", log.Ldate|log.Ltime)
 			infoLogger.Printf("- %s - %s %s", id, r.Method, r.RequestURI)
 
 			next.ServeHTTP(record, r)
