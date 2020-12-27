@@ -30,6 +30,7 @@ This is just a simple rest api developed with go for learning purposes.
 
 - [x] Logging
 - [x] Add Request ID
+- [x] User model and User routes
 - [ ] JWT Authentication
 - [ ] Session
 - [ ] Body validation

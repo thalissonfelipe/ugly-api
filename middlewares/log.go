@@ -2,11 +2,10 @@ package middlewares
 
 import (
 	"context"
-	"log"
 	"net/http"
-	"os"
 
 	"github.com/google/uuid"
+	"github.com/thalissonfelipe/ugly-api/utils"
 )
 
 // ContextKey ...
@@ -44,12 +43,11 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 			ctx = context.WithValue(ctx, ContextKeyValue, id)
 			r = r.WithContext(ctx)
 
-			infoLogger := log.New(os.Stdout, "INFO:  ", log.Ldate|log.Ltime)
-			infoLogger.Printf("- %s - %s %s", id, r.Method, r.RequestURI)
+			utils.CustomLogger.InfoLogger.Printf("- %s - %s %s", id, r.Method, r.RequestURI)
 
 			next.ServeHTTP(record, r)
 
-			infoLogger.Printf("- %s - Status Code %d", id, record.status)
+			utils.CustomLogger.InfoLogger.Printf("- %s - Status Code %d", id, record.status)
 		})
 }
 

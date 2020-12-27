@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	c "github.com/thalissonfelipe/ugly-api/config"
@@ -21,12 +20,13 @@ func (m *MService) GetMovies() (*[]models.Movie, error) {
 	collection := m.Client.Database(c.MyConfig.DB.DatabaseName).Collection("movies")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	cursor, err := collection.Find(ctx, bson.D{})
+	cur, err := collection.Find(ctx, bson.D{})
 	if err != nil {
 		return nil, err
 	}
-	var movies []models.Movie
-	err = cursor.All(ctx, &movies)
+	defer cur.Close(ctx)
+	movies := make([]models.Movie, 0)
+	err = cur.All(ctx, &movies)
 
 	return &movies, err
 }
@@ -36,16 +36,12 @@ func (m *MService) GetMovie(name string) (*models.Movie, error) {
 	collection := m.Client.Database(c.MyConfig.DB.DatabaseName).Collection("movies")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	var movie models.Movie
-	err := collection.FindOne(ctx, bson.M{"name": name}).Decode(&movie)
-	if err != nil {
-		switch err {
-		case mongo.ErrNoDocuments:
-			return nil, nil
-		default:
-			return nil, err
-		}
+	result := collection.FindOne(ctx, bson.M{"name": name})
+	if result.Err() != nil {
+		return nil, result.Err()
 	}
+	var movie models.Movie
+	err := result.Decode(&movie)
 	return &movie, err
 }
 
@@ -59,14 +55,19 @@ func (m *MService) CreateMovie(movie *models.Movie) error {
 }
 
 // UpdateMovie should update a movie by name in the mongo database
-func (m *MService) UpdateMovie(movie *models.Movie) error {
-	collection := m.Client.Database(c.MyConfig.DB.DatabaseName).Collection("movies")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	update := bson.D{{"$set", movie}}
-	err := collection.FindOneAndUpdate(ctx, bson.M{"name": movie.Name}, update).Err()
-	fmt.Println(err)
-	return err
+func (m *MService) UpdateMovie(name string, movie *models.Movie) error {
+	// collection := m.Client.Database(c.MyConfig.DB.DatabaseName).Collection("movies")
+	// ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	// defer cancel()
+	// update := bson.D{{"$set", movie}}
+	// result := collection.FindOneAndUpdate(ctx, bson.M{"name": name}, update)
+	// err := result.Err()
+	// log.Println(result)
+
+	// results := collection.FindOne(ctx, bson.M{"name": name})
+	// log.Println(results.Err())
+	// return err
+	return nil
 }
 
 // DeleteMovie should delete a movie by name in the mongo database

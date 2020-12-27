@@ -6,9 +6,10 @@ import (
 	"net/http"
 
 	"github.com/joho/godotenv"
-	c "github.com/thalissonfelipe/ugly-api/config"
+	"github.com/thalissonfelipe/ugly-api/config"
 	"github.com/thalissonfelipe/ugly-api/database"
 	"github.com/thalissonfelipe/ugly-api/routes"
+	"github.com/thalissonfelipe/ugly-api/utils"
 )
 
 func main() {
@@ -17,17 +18,17 @@ func main() {
 		log.Fatal("Error loading .env file.")
 	}
 
-	c.MyConfig = c.GetConfig()
+	config.MyConfig = config.GetConfig()
 
 	client := database.InitializeMongoDB()
 	defer client.Disconnect(context.Background())
 
 	router := routes.NewRouter(client)
 
-	port := c.MyConfig.API.Port
+	port := config.MyConfig.API.Port
 	if port == "" {
 		port = "5000"
 	}
-	log.Printf("Server listening on port %s!", port)
-	log.Fatal(http.ListenAndServe(":"+port, router))
+	utils.CustomLogger.InfoLogger.Printf("Server listening on port %s!", port)
+	utils.CustomLogger.ErrorLogger.Fatal(http.ListenAndServe(":"+port, router))
 }

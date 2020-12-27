@@ -11,17 +11,24 @@ import (
 // NewRouter is a custom function that creates a router with their specified routes and handlers
 func NewRouter(client *mongo.Client) *mux.Router {
 	mservice := services.MService{Client: client}
+	uservice := services.UService{Client: client}
 	mhandler := handlers.MovieHandler{MService: &mservice}
+	uhandler := handlers.UserHandler{UService: &uservice}
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.Use(middlewares.LoggingMiddleware)
 
-	api := router.PathPrefix("/api/v1/movies").Subrouter()
-	api.HandleFunc("/", mhandler.ListMoviesHandler).Methods("GET")
-	api.HandleFunc("/{name}", mhandler.GetMovieHandler).Methods("GET")
-	api.HandleFunc("/", mhandler.CreateMovieHandler).Methods("POST")
-	api.HandleFunc("/{name}", mhandler.UpdateMovieHandler).Methods("PUT")
-	api.HandleFunc("/{name}", mhandler.DeleteMovieHandler).Methods("DELETE")
+	// Movie routes
+	router.HandleFunc("/api/v1/movies", mhandler.ListMoviesHandler).Methods("GET")
+	router.HandleFunc("/api/v1/movies/{name}", mhandler.GetMovieHandler).Methods("GET")
+	router.HandleFunc("/api/v1/movies", mhandler.CreateMovieHandler).Methods("POST")
+	router.HandleFunc("/api/v1/movies/{name}", mhandler.UpdateMovieHandler).Methods("PUT")
+	router.HandleFunc("/api/v1/movies/{name}", mhandler.DeleteMovieHandler).Methods("DELETE")
+
+	// User routes
+	router.HandleFunc("/api/v1/users", uhandler.GetUsersHandler).Methods("GET")
+	router.HandleFunc("/api/v1/users/login", uhandler.LoginHandler).Methods("POST")
+	router.HandleFunc("/api/v1/users", uhandler.CreateUserHandler).Methods("POST")
 
 	return router
 }

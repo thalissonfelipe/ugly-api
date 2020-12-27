@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/thalissonfelipe/ugly-api/config"
+	"github.com/thalissonfelipe/ugly-api/utils"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -30,7 +31,7 @@ func InitializeMongoDB() *mongo.Client {
 		log.Fatal(err)
 	}
 
-	log.Println("Connected with mongodb!")
+	utils.CustomLogger.InfoLogger.Println("Connected with mongodb!")
 
 	return client
 }
