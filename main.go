@@ -29,6 +29,6 @@ func main() {
 	if port == "" {
 		port = "5000"
 	}
-	utils.CustomLogger.InfoLogger.Printf("Server listening on port %s!", port)
+	utils.CustomLogger.InfoLogger.Printf("- Server listening on port %s!", port)
 	utils.CustomLogger.ErrorLogger.Fatal(http.ListenAndServe(":"+port, router))
 }

@@ -29,7 +29,15 @@ func (u *UserHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	token, err := utils.CreateToken(login.Username, w)
+	if err != nil {
+		utils.HandlerError(w, r, 500, err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(models.Token{Token: token})
 }
 
 func (u *UserHandler) GetUsersHandler(w http.ResponseWriter, r *http.Request) {

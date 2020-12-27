@@ -31,7 +31,8 @@ This is just a simple rest api developed with go for learning purposes.
 - [x] Logging
 - [x] Add Request ID
 - [x] User model and User routes
-- [ ] JWT Authentication
+- [x] JWT Authentication
+- [ ] Refactor JWT and utils functions
 - [ ] Session
 - [ ] Body validation
 - [x] Data persistence (MongoDB)

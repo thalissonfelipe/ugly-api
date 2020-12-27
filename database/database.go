@@ -31,7 +31,7 @@ func InitializeMongoDB() *mongo.Client {
 		log.Fatal(err)
 	}
 
-	utils.CustomLogger.InfoLogger.Println("Connected with mongodb!")
+	utils.CustomLogger.InfoLogger.Println("- Connected with mongodb!")
 
 	return client
 }

@@ -19,16 +19,16 @@ func NewRouter(client *mongo.Client) *mux.Router {
 	router.Use(middlewares.LoggingMiddleware)
 
 	// Movie routes
-	router.HandleFunc("/api/v1/movies", mhandler.ListMoviesHandler).Methods("GET")
-	router.HandleFunc("/api/v1/movies/{name}", mhandler.GetMovieHandler).Methods("GET")
-	router.HandleFunc("/api/v1/movies", mhandler.CreateMovieHandler).Methods("POST")
-	router.HandleFunc("/api/v1/movies/{name}", mhandler.UpdateMovieHandler).Methods("PUT")
-	router.HandleFunc("/api/v1/movies/{name}", mhandler.DeleteMovieHandler).Methods("DELETE")
+	router.HandleFunc("/api/v1/movies", middlewares.JWTMiddleware(mhandler.ListMoviesHandler)).Methods("GET")
+	router.HandleFunc("/api/v1/movies/{name}", middlewares.JWTMiddleware(mhandler.GetMovieHandler)).Methods("GET")
+	router.HandleFunc("/api/v1/movies", middlewares.JWTMiddleware(mhandler.CreateMovieHandler)).Methods("POST")
+	router.HandleFunc("/api/v1/movies/{name}", middlewares.JWTMiddleware(mhandler.UpdateMovieHandler)).Methods("PUT")
+	router.HandleFunc("/api/v1/movies/{name}", middlewares.JWTMiddleware(mhandler.DeleteMovieHandler)).Methods("DELETE")
 
 	// User routes
-	router.HandleFunc("/api/v1/users", uhandler.GetUsersHandler).Methods("GET")
+	router.HandleFunc("/api/v1/users", middlewares.JWTMiddleware(uhandler.GetUsersHandler)).Methods("GET")
+	router.HandleFunc("/api/v1/users", middlewares.JWTMiddleware(uhandler.CreateUserHandler)).Methods("POST")
 	router.HandleFunc("/api/v1/users/login", uhandler.LoginHandler).Methods("POST")
-	router.HandleFunc("/api/v1/users", uhandler.CreateUserHandler).Methods("POST")
 
 	return router
 }
