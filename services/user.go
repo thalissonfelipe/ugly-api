@@ -4,43 +4,27 @@ import (
 	"context"
 	"time"
 
+	"github.com/thalissonfelipe/ugly-api/config"
 	"github.com/thalissonfelipe/ugly-api/models"
 	"github.com/thalissonfelipe/ugly-api/utils"
 
-	c "github.com/thalissonfelipe/ugly-api/config"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// UService struct
-type UService struct {
+// UserService struct
+type UserService struct {
 	Client *mongo.Client
 }
 
-// Authenticate checks if the user passed valid username and login
-func (u *UService) Authenticate(login *models.Login) error {
-	collection := u.Client.Database(c.MyConfig.DB.DatabaseName).Collection("users")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	result := collection.FindOne(ctx, bson.M{"username": login.Username})
-	if result.Err() != nil {
-		return result.Err()
-	}
-
-	exists := models.User{}
-	err := result.Decode(&exists)
-	if err != nil {
-		return err
-	}
-
-	err = utils.ComparePassword(exists.Password, login.Password)
-
-	return err
+// Authenticate ...
+func (u *UserService) Authenticate(login *models.Login) error {
+	return utils.CheckUser(login.Username, login.Password, u.Client)
 }
 
 // GetUsers returns a lisst of users
-func (u *UService) GetUsers() (*[]models.UserResponse, error) {
-	collection := u.Client.Database(c.MyConfig.DB.DatabaseName).Collection("users")
+func (u *UserService) GetUsers() (*[]models.UserResponse, error) {
+	collection := u.Client.Database(config.MyConfig.DB.DatabaseName).Collection("users")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	cur, err := collection.Find(ctx, bson.D{})
@@ -55,8 +39,8 @@ func (u *UService) GetUsers() (*[]models.UserResponse, error) {
 }
 
 // CreateUser creates a new user
-func (u *UService) CreateUser(user *models.User) error {
-	collection := u.Client.Database(c.MyConfig.DB.DatabaseName).Collection("users")
+func (u *UserService) CreateUser(user *models.User) error {
+	collection := u.Client.Database(config.MyConfig.DB.DatabaseName).Collection("users")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	err := collection.FindOne(ctx, bson.M{"username": user.Username}).Err()

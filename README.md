@@ -32,7 +32,7 @@ This is just a simple rest api developed with go for learning purposes.
 - [x] Add Request ID
 - [x] User model and User routes
 - [x] JWT Authentication
-- [ ] Refactor JWT and utils functions
+- [x] Refactor JWT and utils functions
 - [ ] Session
 - [ ] Body validation
 - [x] Data persistence (MongoDB)

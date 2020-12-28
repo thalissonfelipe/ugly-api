@@ -8,6 +8,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/thalissonfelipe/ugly-api/config"
 	"github.com/thalissonfelipe/ugly-api/database"
+	"github.com/thalissonfelipe/ugly-api/middlewares"
 	"github.com/thalissonfelipe/ugly-api/routes"
 	"github.com/thalissonfelipe/ugly-api/utils"
 )
@@ -29,6 +30,7 @@ func main() {
 	if port == "" {
 		port = "5000"
 	}
+
 	utils.CustomLogger.InfoLogger.Printf("- Server listening on port %s!", port)
-	utils.CustomLogger.ErrorLogger.Fatal(http.ListenAndServe(":"+port, router))
+	utils.CustomLogger.ErrorLogger.Fatal(http.ListenAndServe(":"+port, middlewares.RemoveTrailingSlashMiddleware(router)))
 }

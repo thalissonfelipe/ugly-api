@@ -10,13 +10,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// MService struct
-type MService struct {
+// MovieService struct
+type MovieService struct {
 	Client *mongo.Client
 }
 
 // GetMovies should find all movies in the mongo database
-func (m *MService) GetMovies() (*[]models.Movie, error) {
+func (m *MovieService) GetMovies() (*[]models.Movie, error) {
 	collection := m.Client.Database(c.MyConfig.DB.DatabaseName).Collection("movies")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -32,21 +32,17 @@ func (m *MService) GetMovies() (*[]models.Movie, error) {
 }
 
 // GetMovie should find a movie by name in the mongo database
-func (m *MService) GetMovie(name string) (*models.Movie, error) {
+func (m *MovieService) GetMovie(name string) (*models.Movie, error) {
 	collection := m.Client.Database(c.MyConfig.DB.DatabaseName).Collection("movies")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	result := collection.FindOne(ctx, bson.M{"name": name})
-	if result.Err() != nil {
-		return nil, result.Err()
-	}
 	var movie models.Movie
-	err := result.Decode(&movie)
+	err := collection.FindOne(ctx, bson.M{"name": name}).Decode(&movie)
 	return &movie, err
 }
 
 // CreateMovie should insert a new movie in the mongo database
-func (m *MService) CreateMovie(movie *models.Movie) error {
+func (m *MovieService) CreateMovie(movie *models.Movie) error {
 	collection := m.Client.Database(c.MyConfig.DB.DatabaseName).Collection("movies")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -55,7 +51,7 @@ func (m *MService) CreateMovie(movie *models.Movie) error {
 }
 
 // UpdateMovie should update a movie by name in the mongo database
-func (m *MService) UpdateMovie(name string, movie *models.Movie) error {
+func (m *MovieService) UpdateMovie(name string, movie *models.Movie) error {
 	// collection := m.Client.Database(c.MyConfig.DB.DatabaseName).Collection("movies")
 	// ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	// defer cancel()
@@ -71,7 +67,7 @@ func (m *MService) UpdateMovie(name string, movie *models.Movie) error {
 }
 
 // DeleteMovie should delete a movie by name in the mongo database
-func (m *MService) DeleteMovie(name string) error {
+func (m *MovieService) DeleteMovie(name string) error {
 	collection := m.Client.Database(c.MyConfig.DB.DatabaseName).Collection("movies")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

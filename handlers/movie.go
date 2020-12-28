@@ -12,12 +12,12 @@ import (
 
 // MovieHandler struct
 type MovieHandler struct {
-	MService *services.MService
+	MovieService *services.MovieService
 }
 
 // ListMoviesHandler returns a list of users
 func (m *MovieHandler) ListMoviesHandler(w http.ResponseWriter, r *http.Request) {
-	movies, err := m.MService.GetMovies()
+	movies, err := m.MovieService.GetMovies()
 	if err != nil {
 		utils.HandlerError(w, r, http.StatusInternalServerError, err)
 		return
@@ -31,7 +31,7 @@ func (m *MovieHandler) ListMoviesHandler(w http.ResponseWriter, r *http.Request)
 // GetMovieHandler returns a movie object
 func (m *MovieHandler) GetMovieHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	movie, err := m.MService.GetMovie(params["name"])
+	movie, err := m.MovieService.GetMovie(params["name"])
 	if err != nil {
 		utils.HandlerError(w, r, 0, err)
 		return
@@ -51,7 +51,7 @@ func (m *MovieHandler) CreateMovieHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	err = m.MService.CreateMovie(&movie)
+	err = m.MovieService.CreateMovie(&movie)
 	if err != nil {
 		utils.HandlerError(w, r, http.StatusInternalServerError, err)
 		return
@@ -72,7 +72,7 @@ func (m *MovieHandler) UpdateMovieHandler(w http.ResponseWriter, r *http.Request
 	// 	return
 	// }
 
-	// err = m.MService.UpdateMovie(params["name"], &movie)
+	// err = m.MovieService.UpdateMovie(params["name"], &movie)
 	// if err != nil {
 	// 	utils.HandlerError(w, r, 0, err)
 	// 	return
@@ -85,7 +85,7 @@ func (m *MovieHandler) UpdateMovieHandler(w http.ResponseWriter, r *http.Request
 func (m *MovieHandler) DeleteMovieHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
-	err := m.MService.DeleteMovie(params["name"])
+	err := m.MovieService.DeleteMovie(params["name"])
 	if err != nil {
 		utils.HandlerError(w, r, 0, err)
 		return

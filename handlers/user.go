@@ -11,7 +11,7 @@ import (
 
 // UserHandler struct
 type UserHandler struct {
-	UService *services.UService
+	UserService *services.UserService
 }
 
 // LoginHandler ...
@@ -23,7 +23,7 @@ func (u *UserHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = u.UService.Authenticate(&login)
+	err = u.UserService.Authenticate(&login)
 	if err != nil {
 		utils.HandlerError(w, r, 0, err)
 		return
@@ -41,7 +41,7 @@ func (u *UserHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (u *UserHandler) GetUsersHandler(w http.ResponseWriter, r *http.Request) {
-	users, err := u.UService.GetUsers()
+	users, err := u.UserService.GetUsers()
 	if err != nil {
 		utils.HandlerError(w, r, http.StatusInternalServerError, err)
 		return
@@ -60,7 +60,7 @@ func (u *UserHandler) CreateUserHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	err = u.UService.CreateUser(&user)
+	err = u.UserService.CreateUser(&user)
 	if err != nil {
 		utils.HandlerError(w, r, 0, err)
 		return
