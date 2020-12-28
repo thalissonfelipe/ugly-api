@@ -60,6 +60,12 @@ func (u *UserHandler) CreateUserHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	err = utils.ValidateCreateUserBody(user)
+	if err != nil {
+		utils.HandlerError(w, r, http.StatusBadRequest, err)
+		return
+	}
+
 	err = u.UserService.CreateUser(&user)
 	if err != nil {
 		utils.HandlerError(w, r, 0, err)

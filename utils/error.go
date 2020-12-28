@@ -25,6 +25,9 @@ var httpStatusMessage = map[int]string{
 }
 
 var ErrAlreadyExists error = errors.New("mongo: resource already exists")
+var ErrMissingRequiredFields error = errors.New("invalid format: missing required fields.")
+var ErrInvalidUsernameLength error = errors.New("invalid format: username must be a minimum of 6 and a maximum of 20")
+var ErrInvalidPasswordLength error = errors.New("invalid format: password must be a minimum of 8 and a maximum of 20")
 
 // HandlerError - Global HandlerError function
 func HandlerError(w http.ResponseWriter, r *http.Request, status int, err error) {
